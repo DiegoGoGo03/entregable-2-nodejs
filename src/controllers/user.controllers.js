@@ -1,31 +1,35 @@
 const catchError = require('../utils/catchError');
 const User = require('../models/User');
 
+// Controller to display all users
 const getAll = catchError(async(req, res) => {
     const result = await User.findAll() // select * from users;
-    // Operaciones...
-    return res.json(result/* valor a retornar */) // Se retorna la información en un archivo json
+    return res.json(result/* valor a retornar */) // Return information from json file
 });
 
+// Controller to register a new user
 const create = catchError(async (req, res) => {
     const result = await User.create(req.body)
     return res.status(201).json(result)
 })
 
+// Controller to display a user
 const getOne = catchError(async (req, res) => {
     const { id } = req.params
     const result = await User.findByPk(id)
-    if(!result) return res.status(404).json("User not found") //Validación
+    if(!result) return res.status(404).json("User not found") //Vaidation
     return res.json(result)
 })
 
+// Controller to delete a user
 const destroy = catchError(async (req, res) => {
     const { id } = req.params
-    const result = await User.destroy({ where: { id } }) //Cuando la clave es igual al valor de deja is solo, en vez de id: id
+    const result = await User.destroy({ where: { id } }) 
     if (!result) return res.status(404).json("User not found")
     return res.sendStatus(204)
 })
 
+// Controller to update a user
 const update = catchError(async (req, res) => {
     const { id } = req.params
     const user = await User.update(
